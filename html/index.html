@@ -1,0 +1,166 @@
+<html>
+
+<head>
+    <title>导师评价</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    </style>
+</head>
+
+<body>
+    <h1 class="mt-3 mb-5 text-center">导师评价信息</h1>
+    <div class="container mt-3">
+
+        <div class="row">
+            <div class="col col-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="schoolcateSelector">选择学校类别</label>
+                    </div>
+                    <select class="custom-select" id="schoolcateSelector">
+                        <option selected>选择学校类别</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col col-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="universitySelector">选择学校</label>
+                    </div>
+                    <select class="custom-select" id="universitySelector">
+                        <option selected>选择所在学校</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col col-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="departmentSelector">选择院系</label>
+                    </div>
+                    <select class="custom-select" id="departmentSelector">
+                        <option selected>选择所在院系</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-6">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="supervisorSelector">选择导师</label>
+                    </div>
+                    <select class="custom-select" id="supervisorSelector">
+                        <option selected>选择姓名</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col col-6 mb-3 text-center">
+                <button type="button" class="btn btn-primary" style="width: 90%;" id="confirmBtn">确认</button>
+            </div>
+        </div>
+
+
+        <div class="descriptions">
+
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="data.js"></script>
+    <script>
+        function getValuesInObjs(arr, key) {
+            var resultArr = new Array();
+            arr.forEach(function (obj) {
+                if (!resultArr.includes(obj[key])) {
+                    resultArr.push(obj[key]);
+                }
+            });
+            return resultArr.sort(function (item1, item2) {
+                return item1.localeCompare(item2, 'zh');
+            });
+        }
+        function filterValuesInArray(arr, key, value) {
+            var resultArr = new Array();
+            arr.forEach(function (obj) {
+                if (obj[key] == value) {
+                    resultArr.push(obj);
+                }
+            });
+            return resultArr;
+        }
+        function setSelectOptions(selector, options) {
+            selector.empty();
+            options.forEach(function (value, i) {
+                var option = new Option(value, i);
+                selector.append($(option));
+                //option.selected = true;
+            });
+        }
+        var schoolcate = $('#schoolcateSelector');
+        var university = $('#universitySelector');
+        var department = $('#departmentSelector');
+        var supervisor = $('#supervisorSelector');
+        var confirmBtn = $('#confirmBtn');
+        var contentDiv = $('.descriptions');
+        var schoolcates = getValuesInObjs(data, 'school_cate')
+        var universities = new Array();
+        var departments = new Array();
+        var supervisors = new Array();
+        var currentCt = '';
+        var currentUn = '';
+        var currentDp = '';
+        var currentSp = '';
+        schoolcate.change(function () {
+            currentCt = schoolcates[schoolcate.val()];
+            var thisData = filterValuesInArray(data, 'school_cate', currentCt);
+            universities = getValuesInObjs(thisData, 'university');
+            setSelectOptions(university, universities);
+            university.trigger('change');
+        });
+        university.change(function () {
+            currentUn = universities[university.val()];
+            var thisData = filterValuesInArray(data, 'university', currentUn);
+            departments = getValuesInObjs(thisData, 'department');
+            setSelectOptions(department, departments);
+            department.trigger('change');
+        });
+        department.change(function () {
+            currentDp = departments[department.val()];
+            var thisData = filterValuesInArray(data, 'university', currentUn);
+            thisData = filterValuesInArray(thisData, 'department', currentDp);
+            supervisors = getValuesInObjs(thisData, 'supervisor');
+            setSelectOptions(supervisor, supervisors);
+            supervisor.trigger('change');
+        })
+        supervisor.change(function () {
+            currentSp = supervisors[supervisor.val()];
+        })
+        confirmBtn.click(function () {
+            var thisData = filterValuesInArray(data, 'university', currentUn);
+            thisData = filterValuesInArray(thisData, 'department', currentDp);
+            thisData = filterValuesInArray(thisData, 'supervisor', currentSp);
+            contentDiv.empty();
+            thisData.forEach(function (value, i) {
+                var desc = value['description'];
+                var rate = value['rate']
+                var card = $(`<div class="card mb-3">
+                    <h5 class="card-header" >${currentUn}${currentDp}</h5 >
+                        <div class="card-body">
+                            <h3 class="card-title">${currentSp}</h3>
+                            <p class="card-text">评分：${rate}</p>
+                            <p class="card-text">${desc}</p>
+                        </div></div >`);
+                contentDiv.append($(card));
+            })
+        });
+        setSelectOptions(schoolcate, schoolcates);
+        schoolcate.trigger('change');
+
+
+    </script>
+</body>
+
+
+</html>
