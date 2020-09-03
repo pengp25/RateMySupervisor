@@ -29,7 +29,7 @@ def get_teacher_data(teacher_id):
     return teacher
 
 def convert_format():
-    with open('urfire.json', 'r',encoding='utf8') as f:
+    with open('data/urfire.json', 'r',encoding='utf8') as f:
         data_list = json.load(f)
     record = {
         'school_cate': '其他',
@@ -37,7 +37,9 @@ def convert_format():
         'department': '',
         'supervisor': '',
         'rate': 0,
-        'desc': ''
+        'description': '',
+        'date': '',
+        'counts': 0
     }
     data = []
     for teacher in data_list:
@@ -58,21 +60,24 @@ def convert_format():
                 record['department'] = '无' if not teacher['college_name'] else teacher['college_name']
                 record['supervisor'] = teacher['name']
                 for comment in teacher['comments']['data']:
-                    record['description'] = comment['other_desc']
+                    desc = comment['other_desc']
+                    record['description'] = desc
+                    record['counts'] = len(desc) if desc else 0
+                    record['date'] = comment['other_desc_date']
                     scores = ["academic_score", "project_money_score", "relation_score", "future_score"]
                     record['rate'] = average([comment[item] for item in scores])
                     data.append(record.copy())
     return data
 
 if __name__ == '__main__':
-    with Pool(processes=8) as pool:
-        teacher_list = pool.map(get_teacher_data, range(1, 60800))
-        with open('../data/urfire_teacher_list.pickle', 'wb') as f:
-            pickle.dump(teacher_list, f, pickle.HIGHEST_PROTOCOL)
-    with open('../data/urfire.json', 'w',encoding='utf8') as f:
-        json.dump(teacher_list, f,ensure_ascii=False)
+    # with Pool(processes=8) as pool:
+    #     teacher_list = pool.map(get_teacher_data, range(1, 60800))
+    #     with open('../data/urfire_teacher_list.pickle', 'wb') as f:
+    #         pickle.dump(teacher_list, f, pickle.HIGHEST_PROTOCOL)
+    # with open('../data/urfire.json', 'w',encoding='utf8') as f:
+    #     json.dump(teacher_list, f,ensure_ascii=False)
     data = convert_format()
-    with open('../data/comments_data.json', 'w',encoding='utf8') as f:
+    with open('data/comments_data.json', 'w',encoding='utf8') as f:
         json.dump(data, f,ensure_ascii=False)
     
         
