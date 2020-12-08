@@ -55,6 +55,9 @@
 
 我也会不定期爬取issue数据添加进来。
 
+# 匿名评价
+GiHub平台匿名评价比较麻烦，可以考虑使用[匿名评论公用账号](https://github.com/kgco/RateMySupervisor/issues/18)
+
 **祝各位都能有一个顺利美好的研究生生活。**
 
 # 关于捐赠
