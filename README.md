@@ -19,6 +19,9 @@
 - [x] 安卓APK，有朋友在[这条issue](https://github.com/kgco/RateMySupervisor/issues/6)下提供了将此静态网页转换为安卓APK的工具及转换成品，有需要的朋友可以前往查看和下载。
 - [ ] 苹果App，暂时还不支持，欢迎各位提供相关的技术
 
+# 其他相关链接
+
+- [mysupervisor_save](https://github.com/wangzhiye-tiancai/mysupervisor_save) 与高校研究生导师评价相关资源搜集
 
 # 获取原始数据
 `data`目录下储存了原始数据，其中：
