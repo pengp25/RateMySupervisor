@@ -89,6 +89,28 @@ GiHub平台匿名评价比较麻烦，可以考虑使用[匿名评论公用账�
 
 最后，感谢每一位希望对本项目做出贡献的朋友，上述内容不是对您的信息不信任，只是作为以往大量导师评价信息的最后一块保留地，作为repo维护者的我只能谨慎再谨慎，十分抱歉！
 
+# 其他备份
+## Docker：
+```
+docker pull apachecn0/ratemysupervisor
+docker run -tid -p <port>:80 apachecn0/ratemysupervisor
+# 访问 http://localhost:{port} 查看文档
+```
+
+## PYPI：
+```
+pip install ratemysupervisor
+ratemysupervisor <port>
+# 访问 http://localhost:{port} 查看文档
+```
+
+## NPM：
+```
+npm install -g ratemysupervisor
+ratemysupervisor <port>
+# 访问 http://localhost:{port} 查看文档
+```
+
 # \*敏感commit列表
 以下列出所有对数据文件有直接修改的commit，以备有需要的朋友查阅已经各位关于数据公正性的监督
 - 125da269003558d6fe1b84d4b7b7f8c01acc6249 通过爬虫脚本获取的原始数据
